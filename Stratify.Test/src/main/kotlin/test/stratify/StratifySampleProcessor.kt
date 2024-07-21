@@ -22,8 +22,7 @@ import test.stratify.processors.DocReaderFunctionProcessor
 class StratifySampleProcessor(
     environment: SymbolProcessorEnvironment
 ) : StratifySymbolProcessor(
-    environment.codeGenerator,
-    environment.logger
+    environment
 ) {
     override val strategies = listOf(
         AnnotationStrategy(

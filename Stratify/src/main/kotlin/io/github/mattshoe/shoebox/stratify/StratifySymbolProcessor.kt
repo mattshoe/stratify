@@ -8,10 +8,18 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Extend this class to
+ */
 abstract class StratifySymbolProcessor(
-    protected val codeGenerator: CodeGenerator,
-    protected val logger: KSPLogger
+    protected val environment: SymbolProcessorEnvironment
 ): SymbolProcessor {
+    protected val codeGenerator: CodeGenerator = environment.codeGenerator
+    protected val logger: KSPLogger = environment.logger
+
+    /**
+     * The strategies that will be applied to this [SymbolProcessor].
+     */
     protected abstract val strategies: List<Strategy<KSNode>>
 
     final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking {

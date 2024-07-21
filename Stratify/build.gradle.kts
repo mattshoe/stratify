@@ -10,7 +10,7 @@ val ARTIFACT_ID = "Stratify"
 val publicationName = "stratify"
 
 dependencies {
-    implementation(libs.ksp.symbol.processing.api)
+    api(libs.ksp.symbol.processing.api)
     implementation(libs.kotlinx.coroutines)
 
     testImplementation(kotlin("test"))
