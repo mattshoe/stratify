@@ -1,0 +1,23 @@
+[versions]
+ksp = "2.0.0-1.0.21"
+kotlinxCoroutines = "1.9.0-RC"
+junit = "4.13.2"
+kotlinPoet = "1.18.1"
+compileTestingKsp = "1.6.0"
+compileTesting = "1.5.0"
+truth = "1.4.2"
+
+[libraries]
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp"}
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-poet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }
+kotlin-poet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinPoet"}
+compile-testing-ksp = { module = "com.github.tschuchortdev:kotlin-compile-testing-ksp", version.ref = "compileTestingKsp" }
+compile-testing = { module = "com.github.tschuchortdev:kotlin-compile-testing", version.ref = "compileTesting"}
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+
+[plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
