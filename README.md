@@ -76,7 +76,7 @@ com.foo.my.project.MyProcessorProvider
 ### 7. Implement a `Processor`
 The final step is to just implement your `Processor`.
 
-Take the simple `Processor` below. This processor just inspects the KDoc on any class declaration, then uses Kotlin Poet 
+Take the simple `Processor` below. This processor inspects the KDoc on any class declaration, then uses Kotlin Poet 
 to generate an extension function which returns the KDoc as a string:
 ```kotlin
 class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're only interested in KSClassDeclaration
@@ -130,16 +130,16 @@ AnnotationStrategy(
 In the context of Stratify, a `Processor` is a class built to handle exactly one type of KSNode. It simply defines the
 operation to run against a specific type of `KSNode`. This is most often used to generate a new code file, but you can 
 leverage a `Processor` to run any type of operation you may need. You may use it to aggregate data, or some other 
-use-case may find.
+use-case you may find.
 
 ### Case Study
 Take this simple `Processor` below. 
-This processor simply inspects the KDoc on a class declaration, then uses Kotlin Poet to generate an extension function
+This processor inspects the KDoc on a class declaration, then uses Kotlin Poet to generate an extension function
 which returns the KDoc as a string.
 
 Note that a `Processor` is not tied to any particular annotation, it simply runs against all the `KSNode` resolved by your 
 `Strategy`. For example, using this in a `FilePatternStrategy` would mean this processor would only run against the classes
-that are within any files matching the specified file pattern.
+that are within files matching the specified file pattern.
 
 ```kotlin
 class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're only interested in KSClassDeclaration
