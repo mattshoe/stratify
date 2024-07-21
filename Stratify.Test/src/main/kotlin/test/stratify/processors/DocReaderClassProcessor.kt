@@ -32,6 +32,4 @@ class DocReaderClassProcessor: Processor<KSClassDeclaration> {
             )
         )
     }
-
-
 }

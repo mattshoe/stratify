@@ -18,7 +18,6 @@ data class AnnotationStrategy(
     override fun resolveNodes(resolver: Resolver, processor: Processor<KSAnnotated>): List<KSAnnotated> {
         return resolver
             .getSymbolsWithAnnotation(annotation.qualifiedName!!)
-            .filterIsInstance(processor.targetClass.java)
             .toList()
 
     }

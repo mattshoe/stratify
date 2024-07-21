@@ -31,6 +31,7 @@ abstract class StratifySymbolProcessor(
                 strategy.processors.forEach { processor ->
                     launch {
                         strategy.resolveNodes(resolver, processor)
+                            .filterIsInstance(processor.targetClass.java)
                             .forEach { node ->
                                 launch {
                                     try {
