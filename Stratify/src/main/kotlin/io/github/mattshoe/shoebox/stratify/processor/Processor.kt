@@ -1,6 +1,7 @@
-package io.github.mattshoe.shoebox.stratify
+package io.github.mattshoe.shoebox.stratify.processor
 
 import com.google.devtools.ksp.symbol.KSNode
+import io.github.mattshoe.shoebox.stratify.model.GeneratedFile
 import kotlin.reflect.KClass
 
 /**

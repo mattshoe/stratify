@@ -1,4 +1,4 @@
-package io.github.mattshoe.shoebox.stratify
+package io.github.mattshoe.shoebox.stratify.model
 
 import com.google.devtools.ksp.processing.Dependencies
 

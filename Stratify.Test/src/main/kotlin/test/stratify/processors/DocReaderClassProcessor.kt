@@ -4,8 +4,8 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
-import io.github.mattshoe.shoebox.stratify.GeneratedFile
-import io.github.mattshoe.shoebox.stratify.Processor
+import io.github.mattshoe.shoebox.stratify.model.GeneratedFile
+import io.github.mattshoe.shoebox.stratify.processor.Processor
 
 class DocReaderClassProcessor: Processor<KSClassDeclaration> {
     override val targetClass = KSClassDeclaration::class

@@ -4,6 +4,9 @@ import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSNode
+import io.github.mattshoe.shoebox.stratify.model.GeneratedFile
+import io.github.mattshoe.shoebox.stratify.processor.Processor
+import io.github.mattshoe.shoebox.stratify.strategy.Strategy
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
