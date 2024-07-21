@@ -39,7 +39,7 @@ annotation class MyAnnotation
 ```
 
 ### 3. Implement a `StratifySymbolProcessor`
-Extend the StratifySymbolProcessor class and just implement the `strategies` list.
+Extend `StratifySymbolProcessor` and implement the `strategies` list.
 
 ```kotlin
 class MyProcessor(
@@ -49,8 +49,8 @@ class MyProcessor(
 ) {
     override val strategies = listOf(
         AnnotationStrategy(
-            annotation = MyAnnotation::class
-            // Add your processors here once you implement them
+            annotation = MyAnnotation::class,
+            TODO("Add your processors here once you implement them")
         )
     )
 }
@@ -109,7 +109,7 @@ class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're 
 }
 ```
 
-## What is a Strategy?
+# What is a Strategy?
 In the context of Stratify, a strategy simply defines a set of operations to run against a specific subset of `KSNode` instances.
 For example, you may have a strategy to run a set of operations against all source code annotated with a specific Annotation. 
 Or perhaps you need to run a set of operations against files matching a specific naming convention. There are many use cases
@@ -126,7 +126,7 @@ AnnotationStrategy(
 )
 ```
 
-## What is a Processor?
+# What is a Processor?
 In the context of Stratify, a `Processor` is a class built to handle exactly one type of KSNode. It simply defines the
 operation to run against a specific type of `KSNode`. This is most often used to generate a new code file, but you can 
 leverage a `Processor` to run any type of operation you may need. You may use it to aggregate data, or some other 
@@ -172,7 +172,7 @@ class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're 
 }
 ```
 
-## Built-In Strategies
+# Built-In Strategies
 ### AnnotationStrategy
 Defines a `Strategy` whose processors will receive all instances of any `KSAnnotated` node which is annotated by the 
 specified annotation.
