@@ -17,7 +17,7 @@ maximize the efficiency of your Symbol Processors.
 - **Coroutines**: With built-in coroutines support, Stratify allows for efficient, non-blocking operations, improving performance in large-scale projects.
 - **Rapid Prototyping and Testing**: Developers can quickly implement and experiment with new processors, accelerating the development cycle.
 
-## Quick Start
+# Quick Start
 
 ### 1. Add Dependencies
 
