@@ -138,14 +138,15 @@ class MyProcessor(
 
 
 # What is a Strategy?
-In the context of **Stratify**, a strategy simply defines a set of operations to run against a specific subset of `KSNode` instances.
-For example, you may have a strategy to run a set of operations against all source code annotated with a specific Annotation. 
-Or perhaps you need to run a set of operations against files matching a specific naming convention. There are many use cases
-you may come across.
+In the context of **Stratify**, a strategy simply defines a sequence of operations to run against a very specific subset of `KSNode` instances.
+For example, you may have a strategy to run a sequence of operations against all source code annotated with a specific Annotation. 
+Or perhaps you need to run a set of operations against all files that are suffixed by "ViewModel". Or perhaps you need
+to run a sequence of operations against all functions suffixed with "Async". There are myriad possible scenarios you 
+may come across.
 
 ### Case Study
-The most common use-case by far will likely be the `AnnotationStrategy` which defines a set of `Processors` to run against 
-all nodes annotated with a specific annotation.
+The most common use-case is the `AnnotationStrategy`. This strategy defines a sequence of `Processors` to run against 
+all `KSAnnotated` nodes which are annotated by the given annotation.
 ```kotlin
 AnnotationStrategy(
     annotation = MyAnnotation::class,
@@ -154,12 +155,14 @@ AnnotationStrategy(
 )
 ```
 
-In the sample above, the `AnnotationStrategy` behaves like a "filter" which filters out all `KSNode` instances EXCEPT for
-the nodes that are annotated with `MyAnnotation`. 
+In the sample above, the `AnnotationStrategy` behaves like a "filter" which only accepts `KSNode` instances that are 
+annotated with `MyAnnotation`. This means its upper bound is the `KSAnnotated` type.
 
-This strategy has 2 processors: `MyClassProcessor` and `MyFunctionProcessor`. The `MyClassProcessor` is a `Processor` that
-ONLY handles the class-level `MyAnnotation` annotations. The `MyFunctionProcessor` behaves similarly, but ONLY processes
-the function-level annotations.
+This strategy has 2 processors: `MyClassProcessor` and `MyFunctionProcessor`. 
+1. `MyClassProcessor` is a `Processor` that ONLY handles `KSClassDeclaration` nodes. Since this processor is used 
+inside the `AnnotationStrategy` for `MyAnnotation`, it will only process instances of `KSClassDeclaration` which are also annotated by `MyAnnotation`.
+2. `MyFunctionProcessor` behaves similarly, but ONLY processes `KSFunctionDeclaration` nodes. Since this processor is used 
+inside the `AnnotationStrategy` for `MyAnnotation`, it will only process instances of `KSFunctionDeclaration` which are also annotated by `MyAnnotation`.
 
 # What is a Processor?
 In the context of **Stratify**, a `Processor` is a class built to handle exactly one type of KSNode. It simply defines the
