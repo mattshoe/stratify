@@ -1,32 +1,41 @@
-# Stratify
-Stratify enables you to build Kotlin Symbol Processing (KSP) plugins more easily than ever before. Stratify abstracts 
+# **Stratify**
+**Stratify** enables you to build Kotlin Symbol Processing (KSP) plugins more easily than ever before. **Stratify** abstracts 
 away nearly all of the boilerplate of writing a KSP plugin, and integrates Kotlin coroutines into your KSP code to 
 maximize the efficiency of your Symbol Processors.
 
 ## Features
 - **Efficiency**: Take advantage of built-in support for Coroutines to increase efficiency.
 - **Flexibility**: Define any number of `Processors` for a given annotation, and control the order in which they run.
-- **Simplicity**: Simple define `Processor`, plug it into a `Strategy`, and Stratify will do the rest!
-- **Scalability**: Designed to handle growing projects, Stratify's robust framework encourages scalable and sustainable development practices, making it ideal for both small teams and large enterprises.
+- **Simplicity**: Simple define `Processor`, plug it into a `Strategy`, and **Stratify** will do the rest!
+- **Scalability**: Designed to handle growing projects, **Stratify**'s robust framework encourages scalable and sustainable development practices, making it ideal for both small teams and large enterprises.
 - **Strategy Pattern**: Makes use of the strategy pattern for flexible and maintainable code generation.
 
 ## Benefits
 
-- **Less Code, More Features**: Stratify abstracts away the complex and tedious boilerplate, enabling developers to focus on the fun stuff.
-- **Architecture**: By enforcing a consistent architecture with the strategy pattern, Stratify can help keep your codebases clean, modular, and easy to manage.
-- **Coroutines**: With built-in coroutines support, Stratify allows for efficient, non-blocking operations, improving performance in large-scale projects.
+- **Less Code, More Features**: **Stratify** abstracts away the complex and tedious boilerplate, enabling developers to focus on the fun stuff.
+- **Architecture**: By enforcing a consistent architecture with the strategy pattern, **Stratify** can help keep your codebases clean, modular, and easy to manage.
+- **Coroutines**: With **Stratify's** built-in coroutines support, you get efficient, non-blocking operations, improving performance in large-scale projects.
 - **Rapid Prototyping and Testing**: Developers can quickly implement and experiment with new processors, accelerating the development cycle.
+
+# Overview
+With **Stratify** all you need to do is set up a `Strategy` and a `Processor`, and **Stratify** will automate the rest of the boilerplate
+to select nodes efficiently. A `Strategy` defines which nodes to visit, and a `Processor` defines an operation to perform on each of
+those nodes. You can have any number of strategies, and each one can have any number of processors. This is an extremely 
+powerful way to build your KSP plugin, because your code will be easy to understand, easy to change, and infinitely flexible.
+The **Stratify** framework will keep your code clean, keep your architecture scalable, simplify maintenance, and make experimentation
+as easy as swapping in a new processor.
 
 # Quick Start
 
 ### 1. Add Dependencies
+The **Stratify** framework will transitively provide you with the KSP
+libraries you need for your development as well, so you only need one dependency.
 
-Add the following to your `build.gradle.kts`:
-
+Add the following to your `build.gradle.kts`
 ```kotlin
 dependencies {
     // Note that this will also provide the KSP libraries you need!
-    implementation("com.github.mattshoe:stratify:1.0.0")  
+    implementation("io.github.mattshoe.shoebox:Stratify:1.0.0")  
 }
 ```
 
@@ -57,24 +66,23 @@ class MyProcessor(
 ```
 
 ### 4. Create a `SymbolProcessorProvider`
-Stratify abstracts this step away for you, all you need to do is the following:
+**Stratify** abstracts this step away for you, all you need to do is the following:
 ```kotlin
-class MyProcessorProvider: SymbolProcessorProvider by stratifyProvider<MyProcessor>()
+class MyProcessorProvider: SymbolProcessorProvider by StratifyProvider<MyProcessor>()
 ```
 
 ### 5. Add your META-INF File
-KSP requires you to have a metadata file that points to your provider.
+KSP requires you to have a metadata file that points to your provider from Step 4.
 
-Create the following file:<br>
+Just create the following file:<br>
 `src/main/resources/META-INF/services/com.google.devtools.ksp.processing.SymbolProcessorProvider`
 
-Inside the file you only need to put the fully qualified name of your `SymbolProcessorProvider` from step 4
+And inside the file just put the fully qualified name of your `SymbolProcessorProvider` from step 4
 ```
-com.foo.my.project.MyProcessorProvider
+com.foo.bar.MyProcessorProvider
 ```
 
 ### 7. Implement a `Processor`
-The final step is to just implement your `Processor`.
 
 Take the simple `Processor` below. This processor inspects the KDoc on any class declaration, then uses Kotlin Poet 
 to generate an extension function which returns the KDoc as a string:
@@ -109,8 +117,28 @@ class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're 
 }
 ```
 
+### 8. Choose a `Strategy` and plug in your `Processor`!
+The final step is to just choose your `Strategy` and plug it into your `StratifySymbolProcessor`!
+```kotlin
+class MyProcessor(
+    environment: SymbolProcessorEnvironment
+) : StratifySymbolProcessor(
+    environment
+) {
+    override val strategies = listOf(
+        AnnotationStrategy(
+            annotation = MyAnnotation::class,
+            DocReaderClassProcessor()
+        )
+    )
+}
+```
+
+
+
+
 # What is a Strategy?
-In the context of Stratify, a strategy simply defines a set of operations to run against a specific subset of `KSNode` instances.
+In the context of **Stratify**, a strategy simply defines a set of operations to run against a specific subset of `KSNode` instances.
 For example, you may have a strategy to run a set of operations against all source code annotated with a specific Annotation. 
 Or perhaps you need to run a set of operations against files matching a specific naming convention. There are many use cases
 you may come across.
@@ -127,7 +155,7 @@ AnnotationStrategy(
 ```
 
 # What is a Processor?
-In the context of Stratify, a `Processor` is a class built to handle exactly one type of KSNode. It simply defines the
+In the context of **Stratify**, a `Processor` is a class built to handle exactly one type of KSNode. It simply defines the
 operation to run against a specific type of `KSNode`. This is most often used to generate a new code file, but you can 
 leverage a `Processor` to run any type of operation you may need. You may use it to aggregate data, or some other 
 use-case you may find.

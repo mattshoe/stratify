@@ -1,6 +1,7 @@
 package test.stratify
 
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
+import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSNode
 import io.github.mattshoe.shoebox.stratify.strategy.AnnotationStrategy
 import io.github.mattshoe.shoebox.stratify.StratifySymbolProcessor
@@ -31,6 +32,4 @@ class StratifySampleProcessor(
             DocReaderFunctionProcessor()
         )
     )
-
-    over
 }
