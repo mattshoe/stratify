@@ -154,6 +154,13 @@ AnnotationStrategy(
 )
 ```
 
+In the sample above, the `AnnotationStrategy` behaves like a "filter" which filters out all `KSNode` instances EXCEPT for
+the nodes that are annotated with `MyAnnotation`. 
+
+This strategy has 2 processors: `MyClassProcessor` and `MyFunctionProcessor`. The `MyClassProcessor` is a `Processor` that
+ONLY handles the class-level `MyAnnotation` annotations. The `MyFunctionProcessor` behaves similarly, but ONLY processes
+the function-level annotations.
+
 # What is a Processor?
 In the context of **Stratify**, a `Processor` is a class built to handle exactly one type of KSNode. It simply defines the
 operation to run against a specific type of `KSNode`. This is most often used to generate a new code file, but you can 
