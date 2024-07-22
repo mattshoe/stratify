@@ -2,9 +2,6 @@ plugins {
     kotlin("jvm")
 }
 
-group = "io.github.mattshoe.shoebox"
-version = "1.0.0.0"
-
 repositories {
     mavenCentral()
 }

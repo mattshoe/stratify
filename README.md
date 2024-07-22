@@ -54,7 +54,7 @@ annotation class MyAnnotation
 ```
 
 ### 3. Implement a `StratifySymbolProcessor`
-Extend `StratifySymbolProcessor` and implement the `strategies` list.
+Extend `StratifySymbolProcessor` and implement the `buildStrategies` method.
 
 ```kotlin
 class MyProcessor(
