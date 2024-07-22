@@ -3,6 +3,15 @@
 away nearly all of the boilerplate of writing a KSP plugin, and integrates Kotlin coroutines into your KSP code to 
 maximize the efficiency of your Symbol Processors.
 
+
+## Overview
+With **Stratify** all you need to do is set up a `Strategy` and a `Processor`, and **Stratify** will automate the rest of the boilerplate
+to select nodes efficiently. A `Strategy` defines which nodes to visit, and a `Processor` defines an operation to perform on each of
+those nodes. You can have any number of strategies, and each one can have any number of processors. This is an extremely
+powerful way to build your KSP plugin, because your code will be easy to understand, easy to change, and infinitely flexible.
+The **Stratify** framework will keep your code clean, keep your architecture scalable, simplify maintenance, and make experimentation
+as easy as swapping in a new processor.
+
 ## Features
 - **Efficiency**: Take advantage of built-in support for Coroutines to increase efficiency.
 - **Flexibility**: Define any number of `Processors` for a given annotation, and control the order in which they run.
@@ -16,20 +25,6 @@ maximize the efficiency of your Symbol Processors.
 - **Architecture**: By enforcing a consistent architecture with the strategy pattern, **Stratify** can help keep your codebases clean, modular, and easy to manage.
 - **Coroutines**: With **Stratify's** built-in coroutines support, you get efficient, non-blocking operations, improving performance in large-scale projects.
 - **Rapid Prototyping and Testing**: Developers can quickly implement and experiment with new processors, accelerating the development cycle.
-
-
-<br>
-<br>
-<br>
-
-
-# Overview
-With **Stratify** all you need to do is set up a `Strategy` and a `Processor`, and **Stratify** will automate the rest of the boilerplate
-to select nodes efficiently. A `Strategy` defines which nodes to visit, and a `Processor` defines an operation to perform on each of
-those nodes. You can have any number of strategies, and each one can have any number of processors. This is an extremely 
-powerful way to build your KSP plugin, because your code will be easy to understand, easy to change, and infinitely flexible.
-The **Stratify** framework will keep your code clean, keep your architecture scalable, simplify maintenance, and make experimentation
-as easy as swapping in a new processor.
 
 
 <br>
