@@ -7,27 +7,19 @@ import com.google.devtools.ksp.symbol.KSNode
 import io.github.mattshoe.shoebox.stratify.model.GeneratedFile
 import io.github.mattshoe.shoebox.stratify.processor.Processor
 import io.github.mattshoe.shoebox.stratify.strategy.Strategy
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
-/**
- * Extend this class to
- */
 abstract class StratifySymbolProcessor(
     protected val environment: SymbolProcessorEnvironment
 ): SymbolProcessor {
     protected val codeGenerator: CodeGenerator = environment.codeGenerator
     protected val logger: KSPLogger = environment.logger
 
-    /**
-     * The strategies that will be applied to this [SymbolProcessor].
-     */
-    protected abstract val strategies: List<Strategy<KSNode, out KSNode>>
+    protected abstract fun buildStrategies(resolver: Resolver): List<Strategy<KSNode, out KSNode>>
 
     final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking {
         return@runBlocking buildList {
-            strategies.forEach { strategy ->
+            buildStrategies(resolver).forEach { strategy ->
                 strategy.processors.forEach { processor ->
                     launch {
                         strategy.resolveNodes(resolver, processor)

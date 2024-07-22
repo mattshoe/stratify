@@ -1,5 +1,6 @@
 package test.stratify
 
+import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSNode
@@ -25,7 +26,7 @@ class StratifySampleProcessor(
 ) : StratifySymbolProcessor(
     environment
 ) {
-    override val strategies = listOf(
+    override fun buildStrategies(resolver: Resolver) = listOf(
         AnnotationStrategy(
             annotation = DocReader::class,
             DocReaderClassProcessor(),
