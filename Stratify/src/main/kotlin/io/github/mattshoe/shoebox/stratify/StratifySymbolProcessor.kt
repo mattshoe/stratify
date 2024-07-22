@@ -15,7 +15,7 @@ abstract class StratifySymbolProcessor(
     protected val codeGenerator: CodeGenerator = environment.codeGenerator
     protected val logger: KSPLogger = environment.logger
 
-    protected abstract fun buildStrategies(resolver: Resolver): List<Strategy<KSNode, out KSNode>>
+    protected abstract suspend fun buildStrategies(resolver: Resolver): List<Strategy<KSNode, out KSNode>>
 
     final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking {
         return@runBlocking buildList {
