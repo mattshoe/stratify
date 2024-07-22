@@ -8,17 +8,17 @@ import io.github.mattshoe.shoebox.stratify.processor.Processor
  * Defines a [Strategy] whose [processors] will receive all instances of any [KSFile] whose name
  * exactly matches the given [name].
  */
-data class FileNameStrategy(
-    val name: String,
-    override val processors: List<Processor<KSFile>>
-): Strategy<KSFile> {
-    constructor(name: String, vararg processors: Processor<KSFile>): this(name, processors.toList())
-
-    override fun resolveNodes(resolver: Resolver, processor: Processor<KSFile>): List<KSFile> {
-        return resolver
-            .getAllFiles()
-            .filter {
-                it.fileName == name
-            }.toList()
-    }
-}
+//data class FileNameStrategy(
+//    val name: String,
+//    override val processors: List<Processor<KSFile>>
+//): Strategy<KSFile> {
+//    constructor(name: String, vararg processors: Processor<KSFile>): this(name, processors.toList())
+//
+//    override fun resolveNodes(resolver: Resolver, processor: Processor<KSFile>): List<KSFile> {
+//        return resolver
+//            .getAllFiles()
+//            .filter {
+//                it.fileName == name
+//            }.toList()
+//    }
+//}

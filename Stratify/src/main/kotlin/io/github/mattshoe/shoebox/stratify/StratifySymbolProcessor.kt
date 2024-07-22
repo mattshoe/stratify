@@ -23,7 +23,7 @@ abstract class StratifySymbolProcessor(
     /**
      * The strategies that will be applied to this [SymbolProcessor].
      */
-    protected abstract val strategies: List<Strategy<KSNode>>
+    protected abstract val strategies: List<Strategy<KSNode, out KSNode>>
 
     final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking {
         return@runBlocking buildList {
@@ -49,6 +49,11 @@ abstract class StratifySymbolProcessor(
         }
     }
 
+    final override fun onError() {
+        super.onError()
+        onError(null, null)
+    }
+
     /**
      * This method will be invoked when an uncaught processing error occurs.
      *
@@ -61,8 +66,10 @@ abstract class StratifySymbolProcessor(
      * @return Only return a node here if you wish to retry processing for this node. This will only work for
      *      nodes that are annotated, as they must be of type KSAnnotated
      */
-    protected open fun onError(node: KSNode, error: Throwable): KSAnnotated? {
-        logger.error("Error processing ${node.location}:  $error", node)
+    protected open fun onError(node: KSNode?, error: Throwable?): KSAnnotated? {
+        node?.let {
+            logger.error("Error processing ${it.location}:  $error", node)
+        }
         // On failure, we should return this node to retry in the next round of processing
         return node as? KSAnnotated
     }
@@ -85,9 +92,9 @@ abstract class StratifySymbolProcessor(
         }
     }
 
-    private suspend fun <T: KSNode> processNode(
-        node: T,
-        processor: Processor<T>
+    private suspend fun processNode(
+        node: KSNode,
+        processor: Processor<KSNode>
     ) = coroutineScope {
         processor.process(node)
             .forEach { fileData ->

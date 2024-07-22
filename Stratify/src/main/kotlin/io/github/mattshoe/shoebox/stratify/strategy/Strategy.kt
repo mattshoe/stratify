@@ -4,7 +4,7 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSNode
 import io.github.mattshoe.shoebox.stratify.processor.Processor
 
-interface Strategy<out T: KSNode> {
-    val processors: List<Processor<T>>
-    fun resolveNodes(resolver: Resolver, processor: Processor<@UnsafeVariance T>): List<T>
+interface Strategy<out TFilter: KSNode, TProcessor: TFilter> {
+    val processors: List<Processor<TProcessor>>
+    fun resolveNodes(resolver: Resolver, processor: Processor<KSNode>): List<TFilter>
 }

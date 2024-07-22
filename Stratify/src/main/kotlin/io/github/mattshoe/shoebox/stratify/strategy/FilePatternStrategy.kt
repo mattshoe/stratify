@@ -10,21 +10,21 @@ import io.github.mattshoe.shoebox.stratify.processor.Processor
  *
  * Note that [pattern] is a Regex.
  */
-data class FilePatternStrategy(
-    val pattern: String,
-    override val processors: List<Processor<KSFile>>
-): Strategy<KSFile> {
-    constructor(pattern: String, vararg processors: Processor<KSFile>): this(pattern, processors.toList())
-
-    private val regex = Regex(pattern)
-
-    override fun resolveNodes(resolver: Resolver, processor: Processor<KSFile>): List<KSFile> {
-        return resolver
-            .getAllFiles()
-            .filter {
-                it::class.java.isAssignableFrom(processor.targetClass.java)
-                    && it.fileName.matches(regex)
-            }
-            .toList()
-    }
-}
+//data class FilePatternStrategy(
+//    val pattern: String,
+//    override val processors: List<Processor<KSFile>>
+//): Strategy<KSFile> {
+//    constructor(pattern: String, vararg processors: Processor<KSFile>): this(pattern, processors.toList())
+//
+//    private val regex = Regex(pattern)
+//
+//    override fun resolveNodes(resolver: Resolver, processor: Processor<KSFile>): List<KSFile> {
+//        return resolver
+//            .getAllFiles()
+//            .filter {
+//                it::class.java.isAssignableFrom(processor.targetClass.java)
+//                    && it.fileName.matches(regex)
+//            }
+//            .toList()
+//    }
+//}

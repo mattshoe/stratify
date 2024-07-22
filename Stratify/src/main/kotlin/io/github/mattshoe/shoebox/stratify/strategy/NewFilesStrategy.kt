@@ -11,12 +11,12 @@ import io.github.mattshoe.shoebox.stratify.processor.Processor
  *
  * @see [Resolver.getNewFiles]
  */
-data class NewFilesStrategy(
-    override val processors: List<Processor<KSFile>>
-): Strategy<KSFile> {
-    constructor(vararg processors: Processor<KSFile>): this(processors.toList())
-
-    override fun resolveNodes(resolver: Resolver, processor: Processor<KSFile>): List<KSFile> {
-        return resolver.getNewFiles().toList()
-    }
-}
+//data class NewFilesStrategy(
+//    override val processors: List<Processor<KSFile>>
+//): Strategy<KSFile> {
+//    constructor(vararg processors: Processor<KSFile>): this(processors.toList())
+//
+//    override fun resolveNodes(resolver: Resolver, processor: Processor<KSFile>): List<KSFile> {
+//        return resolver.getNewFiles().toList()
+//    }
+//}

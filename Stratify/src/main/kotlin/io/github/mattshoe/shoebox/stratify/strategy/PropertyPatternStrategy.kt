@@ -10,26 +10,26 @@ import io.github.mattshoe.shoebox.stratify.processor.Processor
  *
  * @param pattern regex to match property names.
  */
-data class PropertyPatternStrategy(
-    val pattern: String,
-    override val processors: List<Processor<KSPropertyDeclaration>>
-): Strategy<KSPropertyDeclaration> {
-    constructor(name: String, vararg processors: Processor<KSPropertyDeclaration>): this(name, processors.toList())
-
-    private val regex = Regex(pattern)
-
-    override fun resolveNodes(
-        resolver: Resolver,
-        processor: Processor<KSPropertyDeclaration>
-    ): List<KSPropertyDeclaration> {
-        return resolver
-            .getAllFiles()
-            .flatMap {
-                it.declarations.filterIsInstance<KSPropertyDeclaration>()
-            }
-            .filter {
-                it.qualifiedName?.asString()?.matches(regex) ?: false
-            }
-            .toList()
-    }
-}
+//data class PropertyPatternStrategy(
+//    val pattern: String,
+//    override val processors: List<Processor<KSPropertyDeclaration>>
+//): Strategy<KSPropertyDeclaration> {
+//    constructor(name: String, vararg processors: Processor<KSPropertyDeclaration>): this(name, processors.toList())
+//
+//    private val regex = Regex(pattern)
+//
+//    override fun resolveNodes(
+//        resolver: Resolver,
+//        processor: Processor<KSPropertyDeclaration>
+//    ): List<KSPropertyDeclaration> {
+//        return resolver
+//            .getAllFiles()
+//            .flatMap {
+//                it.declarations.filterIsInstance<KSPropertyDeclaration>()
+//            }
+//            .filter {
+//                it.qualifiedName?.asString()?.matches(regex) ?: false
+//            }
+//            .toList()
+//    }
+//}

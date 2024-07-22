@@ -14,19 +14,19 @@ import io.github.mattshoe.shoebox.stratify.processor.Processor
  *
  * @param name fully qualified name of the function to be loaded; using '.' as separator.
  */
-data class FunctionNameStrategy(
-    val name: String,
-    override val processors: List<Processor<KSFunctionDeclaration>>
-): Strategy<KSFunctionDeclaration> {
-    constructor(name: String, vararg processors: Processor<KSFunctionDeclaration>): this(name, processors.toList())
-
-    override fun resolveNodes(
-        resolver: Resolver,
-        processor: Processor<KSFunctionDeclaration>
-    ): List<KSFunctionDeclaration> {
-        return resolver
-            .getFunctionDeclarationsByName(name)
-            .toList()
-    }
-}
+//data class FunctionNameStrategy(
+//    val name: String,
+//    override val processors: List<Processor<KSFunctionDeclaration>>
+//): Strategy<KSFunctionDeclaration> {
+//    constructor(name: String, vararg processors: Processor<KSFunctionDeclaration>): this(name, processors.toList())
+//
+//    override fun resolveNodes(
+//        resolver: Resolver,
+//        processor: Processor<KSFunctionDeclaration>
+//    ): List<KSFunctionDeclaration> {
+//        return resolver
+//            .getFunctionDeclarationsByName(name)
+//            .toList()
+//    }
+//}
 
