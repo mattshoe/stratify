@@ -165,19 +165,23 @@ inside the `AnnotationStrategy` for `MyAnnotation`, it will only process instanc
 inside the `AnnotationStrategy` for `MyAnnotation`, it will only process instances of `KSFunctionDeclaration` which are also annotated by `MyAnnotation`.
 
 # What is a Processor?
-In the context of **Stratify**, a `Processor` is a class built to handle exactly one type of KSNode. It simply defines the
-operation to run against a specific type of `KSNode`. This is most often used to generate a new code file, but you can 
-leverage a `Processor` to run any type of operation you may need. You may use it to aggregate data, or some other 
-use-case you may find.
+With **Stratify**, a `Processor` defines one single operation that is performed on a specific sub-type of `KSNode`. 
+This is most often used to generate a new code file, but you can leverage a `Processor` to run any type of operation you
+may need. You may use it to aggregate data, or some other use-case you may come across. You are not required to return 
+any `GeneratedFile` from your processor.
 
 ### Case Study
-Take this simple `Processor` below. 
-This processor inspects the KDoc on a class declaration, then uses Kotlin Poet to generate an extension function
-which returns the KDoc as a string.
+Consider the simple `Processor` below. 
+This processor inspects the KDoc on a class declaration, then generates an extension function which returns the KDoc 
+as a string, using KotlinPoet to generate the code.
 
-Note that a `Processor` is not tied to any particular annotation, it simply runs against all the `KSNode` resolved by your 
-`Strategy`. For example, using this in a `FilePatternStrategy` would mean this processor would only run against the classes
-that are within files matching the specified file pattern.
+Note that, by design, a `Processor` implementation is not tied to any particular annotation or other filtering logic. It simply 
+runs against all the `KSNode` resolved by your `Strategy`. This allows your `Processor` implementations to remain highly reusable
+and encourages separation of concerns.
+
+For example, using the processor below in a `FilePatternStrategy` would mean that processor only runs against the classes
+contained within files matching the specified file pattern. Or using this in a `FunctionNameStrategy` means this processor
+would only run against the functions that match the function name specified in the `FunctionNameStrategy`.
 
 ```kotlin
 class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're only interested in KSClassDeclaration
@@ -212,7 +216,7 @@ class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're 
 
 # Built-In Strategies
 ### AnnotationStrategy
-Defines a `Strategy` whose processors will receive all instances of any `KSAnnotated` node which is annotated by the 
+Defines a `Strategy` whose processors will receive all instances of `KSAnnotated` nodes which are annotated by the 
 specified annotation.
 ```kotlin
 AnnotationStrategy(
@@ -223,7 +227,7 @@ AnnotationStrategy(
 ```
 
 ### FilePatternStrategy
-Defines a `Strategy` whose processors will receive all instances of any `KSFile` nodes whose name matches the given pattern.
+Defines a `Strategy` whose processors will receive all instances of `KSFile` nodes whose name matches the given pattern.
 ```kotlin
 FilePatternStrategy(
     pattern = ".*ViewModel",
@@ -233,8 +237,7 @@ FilePatternStrategy(
 ```
 
 ### FileNameStrategy
-Defines a `Strategy` whose processors will receive all instances of any `KSFile` nodes whose name exactly matches the 
-given name.
+Defines a `Strategy` whose processors will receive all instances of `KSFile` nodes whose name exactly matches the given name.
 ```kotlin
 FileNameStrategy(
     name = "SomeFileName",
@@ -244,8 +247,7 @@ FileNameStrategy(
 ```
 
 ### FunctionPatternStrategy
-Defines a `Strategy` whose processors will receive all instances of any `KSFunctionDeclaration` nodes whose name matches 
-the given pattern.
+Defines a `Strategy` whose processors will receive all instances of `KSFunctionDeclaration` nodes whose name matches the given pattern.
 ```kotlin
 FunctionPatternStrategy(
     pattern = ".*SomeFunction",
@@ -254,7 +256,7 @@ FunctionPatternStrategy(
 ```
 
 ### FunctionNameStrategy
-Defines a `Strategy` whose processors will receive all instances of any `KSFunctionDeclaration` nodes whose name exactly matches the
+Defines a `Strategy` whose processors will receive all instances of `KSFunctionDeclaration` nodes whose name exactly matches the
 given name.
 ```kotlin
 FunctionNameStrategy(
@@ -264,8 +266,7 @@ FunctionNameStrategy(
 ```
 
 ### PropertyPatternStrategy
-Defines a `Strategy` whose processors will receive all instances of any `KSPropertyDeclaration` nodes whose name matches
-the given pattern.
+Defines a `Strategy` whose processors will receive all instances of `KSPropertyDeclaration` nodes whose name matches the given pattern.
 ```kotlin
 PropertyPatternStrategy(
     pattern = ".*SomeProperty",
@@ -274,7 +275,7 @@ PropertyPatternStrategy(
 ```
 
 ### PropertyNameStrategy
-Defines a `Strategy` whose processors will receive all instances of any `KSPropertyDeclaration` nodes whose name exactly matches the
+Defines a `Strategy` whose processors will receive all instances of `KSPropertyDeclaration` nodes whose name exactly matches the
 given name.
 ```kotlin
 PropertyNameStrategy(
@@ -284,7 +285,7 @@ PropertyNameStrategy(
 ```
 
 ### NewFilesStrategy
-Defines a `Strategy` whose processors will receive all new `KSFile` instances. The term "new" here is as defined by `com.google.devtools.ksp.processing.Resolver.getNewFiles`.
+Defines a `Strategy` whose processors will receive all **_new_** `KSFile` instances. The term "new" here is as defined by [`Resolver.getNewFiles`](https://github.com/google/ksp/blob/main/api/src/main/kotlin/com/google/devtools/ksp/processing/Resolver.kt#L31).
 
 ```kotlin
 NewFilesStrategy(
