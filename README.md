@@ -68,7 +68,7 @@ class MyProcessor(
 ### 4. Create a `SymbolProcessorProvider`
 **Stratify** abstracts this step away for you, all you need to do is the following:
 ```kotlin
-class MyProcessorProvider: SymbolProcessorProvider by StratifyProvider<MyProcessor>()
+class MyProcessorProvider: SymbolProcessorProvider by stratifyProvider<MyProcessor>()
 ```
 
 ### 5. Add your META-INF File
