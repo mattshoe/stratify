@@ -62,7 +62,7 @@ class MyProcessor(
 ) : StratifySymbolProcessor(
     environment
 ) {
-    override val strategies = listOf(
+    override fun buildStrategies(resolver: Resolver) = listOf(
         AnnotationStrategy(
             annotation = MyAnnotation::class,
             TODO("Add your processors here once you implement them")
@@ -131,7 +131,7 @@ class MyProcessor(
 ) : StratifySymbolProcessor(
     environment
 ) {
-    override val strategies = listOf(
+    override fun buildStrategies(resolver: Resolver) = listOf(
         AnnotationStrategy(
             annotation = MyAnnotation::class,
             DocReaderClassProcessor()
