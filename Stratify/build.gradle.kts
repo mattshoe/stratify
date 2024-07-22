@@ -18,6 +18,11 @@ dependencies {
     testImplementation(libs.junit)
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 afterEvaluate {
     plugins.withId("maven-publish") {
         publishing {

@@ -41,7 +41,7 @@ Add the following to your `build.gradle.kts`
 ```kotlin
 dependencies {
     // Note that this will also provide the KSP libraries you need!
-    implementation("io.github.mattshoe.shoebox:Stratify:1.0.0")  
+    implementation("io.github.mattshoe.shoebox:Stratify:1.0.0-Beta")  
 }
 ```
 
@@ -312,3 +312,10 @@ NewFilesStrategy(
     DocReaderClassProcessor()
 )
 ```
+
+<br>
+<br>
+<br>
+
+# Contributing
+Contributions are welcomed and encouraged! Please review the guidelines in the [CONTRIBUTING](CONTRIBUTING.md) docs
