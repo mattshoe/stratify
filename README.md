@@ -17,13 +17,11 @@ maximize the efficiency of your Symbol Processors.
 - **Coroutines**: With **Stratify's** built-in coroutines support, you get efficient, non-blocking operations, improving performance in large-scale projects.
 - **Rapid Prototyping and Testing**: Developers can quickly implement and experiment with new processors, accelerating the development cycle.
 
+
+<br>
+<br>
 <br>
 
----
-
----
-
----
 
 # Overview
 With **Stratify** all you need to do is set up a `Strategy` and a `Processor`, and **Stratify** will automate the rest of the boilerplate
@@ -33,13 +31,10 @@ powerful way to build your KSP plugin, because your code will be easy to underst
 The **Stratify** framework will keep your code clean, keep your architecture scalable, simplify maintenance, and make experimentation
 as easy as swapping in a new processor.
 
+
+<br>
 <br>
 
----
-
----
-
----
 
 # Quick Start
 
@@ -150,13 +145,11 @@ class MyProcessor(
 }
 ```
 
+
+<br>
+<br>
 <br>
 
----
-
----
-
----
 
 
 # What is a Strategy?
@@ -186,13 +179,11 @@ inside the `AnnotationStrategy` for `MyAnnotation`, it will only process instanc
 2. `MyFunctionProcessor` behaves similarly, but ONLY processes `KSFunctionDeclaration` nodes. Since this processor is used 
 inside the `AnnotationStrategy` for `MyAnnotation`, it will only process instances of `KSFunctionDeclaration` which are also annotated by `MyAnnotation`.
 
+
+<br>
+<br>
 <br>
 
----
-
----
-
----
 
 # What is a Processor?
 With **Stratify**, a `Processor` defines one single operation that is performed on a specific sub-type of `KSNode`. 
@@ -245,12 +236,8 @@ class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're 
 ```
 
 <br>
-
----
-
----
-
----
+<br>
+<br>
 
 # Built-In Strategies
 ### AnnotationStrategy
