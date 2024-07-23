@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-Contact [mattshoe81@gmail.com](mailto:mattshoe81@gmail.com?subject=Stratify Security)
+Contact mattshoe81@gmail.com 
