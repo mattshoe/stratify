@@ -4,14 +4,23 @@ import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSNode
+import io.github.mattshoe.shoebox.stratify.logger.StratifyLogger
 import io.github.mattshoe.shoebox.stratify.model.GeneratedFile
 import io.github.mattshoe.shoebox.stratify.processor.Processor
 import io.github.mattshoe.shoebox.stratify.strategy.Strategy
 import kotlinx.coroutines.*
 
-abstract class StratifySymbolProcessor(
-    protected val environment: SymbolProcessorEnvironment
-): SymbolProcessor {
+abstract class StratifySymbolProcessor: SymbolProcessor {
+    protected val environment = SymbolProcessorEnvironment(
+        stratifySymbolProcessorEnvironment.kspEnvironment.options,
+        stratifySymbolProcessorEnvironment.kspEnvironment.kotlinVersion,
+        stratifySymbolProcessorEnvironment.kspEnvironment.codeGenerator,
+        StratifyLogger(stratifySymbolProcessorEnvironment.kspEnvironment.logger),
+        stratifySymbolProcessorEnvironment.kspEnvironment.apiVersion,
+        stratifySymbolProcessorEnvironment.kspEnvironment.compilerVersion,
+        stratifySymbolProcessorEnvironment.kspEnvironment.platforms,
+        stratifySymbolProcessorEnvironment.kspEnvironment.kspVersion,
+    )
     protected val codeGenerator: CodeGenerator = environment.codeGenerator
     protected val logger: KSPLogger = environment.logger
 

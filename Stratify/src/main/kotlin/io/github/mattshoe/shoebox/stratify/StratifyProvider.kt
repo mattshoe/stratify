@@ -1,14 +1,17 @@
 package io.github.mattshoe.shoebox.stratify
 
-import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
+import io.github.mattshoe.shoebox.stratify.model.StratifySymbolProcessorEnvironment
+
+lateinit var stratifySymbolProcessorEnvironment: StratifySymbolProcessorEnvironment
 
 inline fun <reified T: StratifySymbolProcessor> stratifyProvider(): SymbolProcessorProvider {
     return SymbolProcessorProvider { environment ->
         try {
-            T::class.java.getDeclaredConstructor(environment::class.java).newInstance(environment)
+            stratifySymbolProcessorEnvironment = StratifySymbolProcessorEnvironment(environment)
+            T::class.java.getDeclaredConstructor().newInstance()
         } catch (e: Throwable) {
-            val message = "Constructor for ${T::class} must have only one parameter, and it must be of type ${SymbolProcessorEnvironment::class.simpleName}"
+            val message = "${T::class} must have a no-arg constructor!"
             environment.logger.error(message)
             throw IllegalStateException(message, e)
         }
