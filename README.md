@@ -41,7 +41,7 @@ Add the following to your `build.gradle.kts`
 ```kotlin
 dependencies {
     // Note that this will also provide the KSP libraries you need!
-    implementation("io.github.mattshoe.shoebox:Stratify:1.1.0-beta1")  
+    implementation("io.github.mattshoe.shoebox:Stratify:1.1.0-beta2")  
 }
 ```
 
@@ -57,11 +57,8 @@ annotation class MyAnnotation
 Extend `StratifySymbolProcessor` and implement the `buildStrategies` method.
 
 ```kotlin
-class MyProcessor(
-    environment: SymbolProcessorEnvironment
-) : StratifySymbolProcessor(
-    environment
-) {
+class MyProcessor: StratifySymbolProcessor() {
+    
     override suspend fun buildStrategies(resolver: Resolver) = listOf(
         AnnotationStrategy(
             annotation = MyAnnotation::class,
@@ -126,11 +123,8 @@ class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're 
 ### 8. Choose a `Strategy` and plug in your `Processor`!
 The final step is to just choose your `Strategy` and plug it into your `StratifySymbolProcessor`!
 ```kotlin
-class MyProcessor(
-    environment: SymbolProcessorEnvironment
-) : StratifySymbolProcessor(
-    environment
-) {
+class MyProcessor: StratifySymbolProcessor() {
+    
     override suspend fun buildStrategies(resolver: Resolver) = listOf(
         AnnotationStrategy(
             annotation = MyAnnotation::class,
