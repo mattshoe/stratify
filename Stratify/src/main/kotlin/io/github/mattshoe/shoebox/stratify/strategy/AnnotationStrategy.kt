@@ -18,7 +18,7 @@ data class AnnotationStrategy(
 
     override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSAnnotated> {
         return resolver.use {
-            getSymbolsWithAnnotation(annotation.qualifiedName!!)
+            getSymbolsWithAnnotation(annotation.qualifiedName ?: "")
         }.toList()
     }
 }

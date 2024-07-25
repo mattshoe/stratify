@@ -1,9 +1,11 @@
 package io.github.mattshoe.shoebox.stratify.strategy
 
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSNode
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.processor.Processor
+import io.github.mattshoe.shoebox.stratify.util.getSourceFiles
 
 /**
  * Defines a [Strategy] whose [processors] will receive all instances of [KSPropertyDeclaration]
@@ -22,11 +24,16 @@ data class PropertyNameStrategy(
         processor: Processor<KSNode>
     ): List<KSPropertyDeclaration> {
         return resolver.use {
-            getAllFiles()
+            getSourceFiles()
         }.flatMap {
-            it.declarations.filterIsInstance<KSPropertyDeclaration>()
+            it.declarations
+                .filterIsInstance<KSClassDeclaration>()
+                .flatMap {
+                    it.declarations
+                        .filterIsInstance<KSPropertyDeclaration>()
+                }
         }.filter {
-            it.qualifiedName?.asString() == name
+            it.simpleName.asString() == name
         }.toList()
     }
 }

@@ -3,4 +3,5 @@ plugins {
 }
 rootProject.name = "Stratify.Project"
 include("Stratify")
+include("Stratify.Consumer")
 include("Stratify.Test")

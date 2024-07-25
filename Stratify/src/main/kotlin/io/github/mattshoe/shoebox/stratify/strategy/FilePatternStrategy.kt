@@ -2,8 +2,11 @@ package io.github.mattshoe.shoebox.stratify.strategy
 
 import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSNode
+import com.google.devtools.ksp.symbol.Origin
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.processor.Processor
+import io.github.mattshoe.shoebox.stratify.util.getSourceFiles
+import kotlin.reflect.KClass
 
 /**
  * Defines a [Strategy] whose [processors] will receive all [KSFile] instances whose file name
@@ -16,15 +19,27 @@ data class FilePatternStrategy(
     override val processors: List<Processor<KSFile>>
 ): Strategy<KSFile, KSFile> {
     constructor(pattern: String, vararg processors: Processor<KSFile>): this(pattern, processors.toList())
+    companion object {
+        private val alreadyProcessed = mutableSetOf<String>()
+    }
 
     private val regex = Regex(pattern)
 
     override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSFile> {
         return resolver.use {
-            getAllFiles()
-        }.filter {
-            it::class.java.isAssignableFrom(processor.targetClass.java)
-                    && it.fileName.matches(regex)
+            getSourceFiles()
+        }.filter { file ->
+            shouldProcess(file, processor.targetClass).also {
+                alreadyProcessed.add(file.filePath)
+            }
         }.toList()
     }
+
+    private fun shouldProcess(file: KSFile, target: KClass<*>): Boolean {
+        return !alreadyProcessed.contains(file.filePath)
+                && target.java.isAssignableFrom(file::class.java)
+                && file.fileName.matches(regex)
+    }
+
+
 }

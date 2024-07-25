@@ -44,6 +44,7 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
                         .forEach { node ->
                             launch(Dispatchers.Default) {
                                 try {
+                                    logger.warn("processing $node")
                                     processNode(node, processor)
                                 } catch (e: Throwable) {
                                     ensureActive()
@@ -91,10 +92,13 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
      * @param node the [KSNode] whose processing produced [fileData].
      * @param fileData the file data produced by processing [KSNode].
      */
-    protected open suspend fun writeToFile(node: KSNode, fileData: GeneratedFile) {
+    protected open suspend fun writeToFile(node: KSNode, fileData: GeneratedFile) = withContext(StratifyDispatcher.Main) {
+        val sourceFile = (node as? KSFile)
+            ?: node.containingFile
+            ?: throw IllegalStateException("Unable to find source file for ${node}!")
         codeGenerator.use {
             createNewFile(
-                fileData.dependencies ?: Dependencies(false, node.containingFile!!),
+                fileData.dependencies ?: Dependencies(false, sourceFile),
                 fileData.packageName,
                 fileData.fileName
             )

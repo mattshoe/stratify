@@ -4,6 +4,7 @@ import com.google.devtools.ksp.symbol.KSFile
 import com.google.devtools.ksp.symbol.KSNode
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.processor.Processor
+import io.github.mattshoe.shoebox.stratify.util.getSourceFiles
 
 /**
  * Defines a [Strategy] whose [processors] will receive all instances of any [KSFile] whose name
@@ -17,7 +18,7 @@ data class FileNameStrategy(
 
     override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSFile> {
         return resolver.use {
-            getAllFiles()
+            getSourceFiles()
         }.filter {
             it.fileName == name
         }.toList()

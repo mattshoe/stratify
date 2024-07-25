@@ -1,6 +1,7 @@
 package io.github.mattshoe.shoebox.stratify.ksp
 
 import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.symbol.KSFile
 import io.github.mattshoe.shoebox.stratify.dispatchers.StratifyDispatcher
 import kotlinx.coroutines.withContext
 

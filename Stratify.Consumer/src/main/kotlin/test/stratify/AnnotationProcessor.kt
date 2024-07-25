@@ -1,11 +1,15 @@
 package test.stratify
 
+import com.google.devtools.ksp.processing.SymbolProcessorProvider
+import io.github.mattshoe.shoebox.stratify.StratifySymbolProcessor
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.strategy.AnnotationStrategy
-import io.github.mattshoe.shoebox.stratify.StratifySymbolProcessor
+import io.github.mattshoe.shoebox.stratify.stratifyProvider
 import test.stratify.annotation.DocReader
 import test.stratify.processors.DocReaderClassProcessor
 import test.stratify.processors.DocReaderFunctionProcessor
+
+class AnnotationProcessorProvider: SymbolProcessorProvider by stratifyProvider<AnnotationProcessor>()
 
 /**
  * This is a sample Kotlin Symbol Processor to demonstrate usage of Stratify.
@@ -17,7 +21,7 @@ import test.stratify.processors.DocReaderFunctionProcessor
  *  2. Create an extension function for each method that is annotated with `@DocReader`,
  *     which will return the KDoc of the annotated method.
  */
-class StratifySampleProcessor: StratifySymbolProcessor() {
+class AnnotationProcessor: StratifySymbolProcessor() {
     override suspend fun buildStrategies(resolver: StratifyResolver) = listOf(
         AnnotationStrategy(
             annotation = DocReader::class,
@@ -26,3 +30,4 @@ class StratifySampleProcessor: StratifySymbolProcessor() {
         )
     )
 }
+

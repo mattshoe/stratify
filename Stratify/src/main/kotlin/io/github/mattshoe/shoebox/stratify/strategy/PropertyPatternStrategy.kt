@@ -4,6 +4,7 @@ import com.google.devtools.ksp.symbol.KSNode
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.processor.Processor
+import io.github.mattshoe.shoebox.stratify.util.getSourceFiles
 
 /**
  * Defines a [Strategy] whose [processors] will receive all instances of [KSPropertyDeclaration]
@@ -24,7 +25,7 @@ data class PropertyPatternStrategy(
         processor: Processor<KSNode>
     ): List<KSPropertyDeclaration> {
         return resolver.use {
-            getAllFiles()
+            getSourceFiles()
         }.flatMap {
             it.declarations.filterIsInstance<KSPropertyDeclaration>()
         }.filter {

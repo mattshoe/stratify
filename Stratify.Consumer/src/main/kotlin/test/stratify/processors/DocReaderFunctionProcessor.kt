@@ -15,7 +15,7 @@ class DocReaderFunctionProcessor: Processor<KSFunctionDeclaration> {
         val packageName = node.packageName.asString()
         val className = (node.parentDeclaration as? KSClassDeclaration)?.simpleName?.asString() ?: ""
         val functionName = node.simpleName.asString()
-        val fileName = "${functionName}_DocReader"
+        val fileName = "${packageName.replace(".", "")}${functionName}_DocReader"
 
         val readDocFunction = FunSpec.builder("readDocFor${functionName.capitalize()}")
             .receiver(ClassName(packageName, className))
