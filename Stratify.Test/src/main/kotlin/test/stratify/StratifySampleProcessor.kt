@@ -21,12 +21,8 @@ import test.stratify.processors.DocReaderFunctionProcessor
  *  2. Create an extension function for each method that is annotated with `@DocReader`,
  *     which will return the KDoc of the annotated method.
  */
-class StratifySampleProcessor(
-    environment: SymbolProcessorEnvironment
-) : StratifySymbolProcessor(
-    environment
-) {
-    override fun buildStrategies(resolver: Resolver) = listOf(
+class StratifySampleProcessor: StratifySymbolProcessor() {
+    override suspend fun buildStrategies(resolver: Resolver) = listOf(
         AnnotationStrategy(
             annotation = DocReader::class,
             DocReaderClassProcessor(),
