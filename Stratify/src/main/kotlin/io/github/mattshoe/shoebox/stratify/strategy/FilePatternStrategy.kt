@@ -1,7 +1,8 @@
 package io.github.mattshoe.shoebox.stratify.strategy
 
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSFile
+import com.google.devtools.ksp.symbol.KSNode
+import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.processor.Processor
 
 /**
@@ -10,21 +11,20 @@ import io.github.mattshoe.shoebox.stratify.processor.Processor
  *
  * Note that [pattern] is a Regex.
  */
-//data class FilePatternStrategy(
-//    val pattern: String,
-//    override val processors: List<Processor<KSFile>>
-//): Strategy<KSFile> {
-//    constructor(pattern: String, vararg processors: Processor<KSFile>): this(pattern, processors.toList())
-//
-//    private val regex = Regex(pattern)
-//
-//    override fun resolveNodes(resolver: Resolver, processor: Processor<KSFile>): List<KSFile> {
-//        return resolver
-//            .getAllFiles()
-//            .filter {
-//                it::class.java.isAssignableFrom(processor.targetClass.java)
-//                    && it.fileName.matches(regex)
-//            }
-//            .toList()
-//    }
-//}
+data class FilePatternStrategy(
+    val pattern: String,
+    override val processors: List<Processor<KSFile>>
+): Strategy<KSFile, KSFile> {
+    constructor(pattern: String, vararg processors: Processor<KSFile>): this(pattern, processors.toList())
+
+    private val regex = Regex(pattern)
+
+    override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSFile> {
+        return resolver.use {
+            getAllFiles()
+        }.filter {
+            it::class.java.isAssignableFrom(processor.targetClass.java)
+                    && it.fileName.matches(regex)
+        }.toList()
+    }
+}

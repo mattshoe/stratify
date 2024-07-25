@@ -1,12 +1,8 @@
 package test.stratify
 
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSNode
+import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.strategy.AnnotationStrategy
 import io.github.mattshoe.shoebox.stratify.StratifySymbolProcessor
-import io.github.mattshoe.shoebox.stratify.strategy.Strategy
 import test.stratify.annotation.DocReader
 import test.stratify.processors.DocReaderClassProcessor
 import test.stratify.processors.DocReaderFunctionProcessor
@@ -22,7 +18,7 @@ import test.stratify.processors.DocReaderFunctionProcessor
  *     which will return the KDoc of the annotated method.
  */
 class StratifySampleProcessor: StratifySymbolProcessor() {
-    override suspend fun buildStrategies(resolver: Resolver) = listOf(
+    override suspend fun buildStrategies(resolver: StratifyResolver) = listOf(
         AnnotationStrategy(
             annotation = DocReader::class,
             DocReaderClassProcessor(),
