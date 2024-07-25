@@ -2,8 +2,11 @@ package io.github.mattshoe.shoebox.stratify
 
 import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.*
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSNode
+import com.google.devtools.ksp.symbol.*
+import io.github.mattshoe.shoebox.stratify.dispatchers.StratifyDispatcher
+import io.github.mattshoe.shoebox.stratify.kspwrappers.DeprecatedCodeGenerator
+import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyCodeGenerator
+import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.logger.StratifyLogger
 import io.github.mattshoe.shoebox.stratify.model.GeneratedFile
 import io.github.mattshoe.shoebox.stratify.processor.Processor
@@ -14,40 +17,45 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
     protected val environment = SymbolProcessorEnvironment(
         stratifySymbolProcessorEnvironment.kspEnvironment.options,
         stratifySymbolProcessorEnvironment.kspEnvironment.kotlinVersion,
-        stratifySymbolProcessorEnvironment.kspEnvironment.codeGenerator,
+        DeprecatedCodeGenerator(),
         StratifyLogger(stratifySymbolProcessorEnvironment.kspEnvironment.logger),
         stratifySymbolProcessorEnvironment.kspEnvironment.apiVersion,
         stratifySymbolProcessorEnvironment.kspEnvironment.compilerVersion,
         stratifySymbolProcessorEnvironment.kspEnvironment.platforms,
         stratifySymbolProcessorEnvironment.kspEnvironment.kspVersion,
     )
-    protected val codeGenerator: CodeGenerator = environment.codeGenerator
+    protected val codeGenerator: StratifyCodeGenerator = StratifyCodeGenerator(stratifySymbolProcessorEnvironment.kspEnvironment.codeGenerator)
     protected val logger: KSPLogger = environment.logger
 
-    protected abstract suspend fun buildStrategies(resolver: Resolver): List<Strategy<KSNode, out KSNode>>
+    protected abstract suspend fun buildStrategies(resolver: StratifyResolver): List<Strategy<KSNode, out KSNode>>
 
-    final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking {
-        return@runBlocking buildList {
-            buildStrategies(resolver).forEach { strategy ->
-                strategy.processors.forEach { processor ->
-                    launch {
-                        strategy.resolveNodes(resolver, processor)
-                            .filterIsInstance(processor.targetClass.java)
-                            .forEach { node ->
-                                launch {
-                                    try {
-                                        processNode(node, processor)
-                                    } catch (e: Throwable) {
-                                        onError(node, e)?.let {
-                                            this@buildList.add(it)
-                                        }
+    final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking(SupervisorJob() + StratifyDispatcher.Main) {
+        val stratifyResolver = StratifyResolver(resolver)
+        val failedNodes = mutableListOf<KSAnnotated>()
+
+        buildStrategies(stratifyResolver).forEach { strategy ->
+            strategy.processors.forEach { processor ->
+                launch(StratifyDispatcher.Main) {
+                    strategy.resolveNodes(stratifyResolver, processor)
+                        .filterIsInstance(processor.targetClass.java)
+                        .forEach { node ->
+                            launch(Dispatchers.Default) {
+                                try {
+                                    logger.warn("processing node: $node")
+                                    processNode(node, processor)
+                                } catch (e: Throwable) {
+                                    onError(node, e)?.let {
+                                        logger.warn("Adding '$node' to failed nodes")
+                                        failedNodes.add(it)
                                     }
                                 }
                             }
-                    }
+                        }
                 }
             }
         }
+
+        return@runBlocking failedNodes
     }
 
     final override fun onError() {
@@ -58,8 +66,8 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
     /**
      * This method will be invoked when an uncaught processing error occurs.
      *
-     * By default, compilation will fail when an error occurs. To change this behavior,
-     * override this method and handle as you see fit.
+     * By default, a failed node will be retried in the next round of processing. To change this behavior,
+     * override this method and return null.
      *
      * @param node the node during whose processing the error occurred
      * @param error the error that was caught
@@ -68,11 +76,9 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
      *      nodes that are annotated, as they must be of type KSAnnotated
      */
     protected open fun onError(node: KSNode?, error: Throwable?): KSAnnotated? {
-        node?.let {
-            logger.error("Error processing ${it.location}:  $error", node)
+        return (node as? KSAnnotated)?.also { annotatedNode ->
+            logger.warn("Processing failed at node '${annotatedNode}'; Stratify will retry in the next round of processing\n\tError Encountered:  $error\n", node)
         }
-        // On failure, we should return this node to retry in the next round of processing
-        return node as? KSAnnotated
     }
 
     /**
@@ -84,12 +90,14 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
      * @param fileData the file data produced by processing [KSNode].
      */
     protected open suspend fun writeToFile(node: KSNode, fileData: GeneratedFile) {
-        codeGenerator.createNewFile(
-            fileData.dependencies ?: Dependencies(false, node.containingFile!!),
-            fileData.packageName,
-            fileData.fileName
-        ).bufferedWriter().use {
-            it.write(fileData.output)
+        codeGenerator.use {
+            createNewFile(
+                fileData.dependencies ?: Dependencies(false, node.containingFile!!),
+                fileData.packageName,
+                fileData.fileName
+            )
+        }.bufferedWriter().use { writer ->
+            writer.write(fileData.output)
         }
     }
 
@@ -99,9 +107,10 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
     ) = coroutineScope {
         processor.process(node)
             .forEach { fileData ->
-                launch {
+                launch(Dispatchers.IO) {
                     writeToFile(node, fileData)
                 }
             }
     }
+
 }
