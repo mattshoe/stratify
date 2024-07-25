@@ -1,5 +1,6 @@
 package io.github.mattshoe.shoebox.stratify.strategy
 
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSNode
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
@@ -27,9 +28,14 @@ data class PropertyPatternStrategy(
         return resolver.use {
             getSourceFiles()
         }.flatMap {
-            it.declarations.filterIsInstance<KSPropertyDeclaration>()
+            it.declarations
+                .filterIsInstance<KSClassDeclaration>()
+                .flatMap {
+                    it.declarations
+                        .filterIsInstance<KSPropertyDeclaration>()
+                }
         }.filter {
-            it.qualifiedName?.asString()?.matches(regex) ?: false
+            it.simpleName.asString().matches(regex)
         }.toList()
     }
 }

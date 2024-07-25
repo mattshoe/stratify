@@ -10,7 +10,6 @@ fun buildCompilation(action: KspCompilationBuilder.() -> Unit) {
     KspCompilationBuilder().apply(action)
 }
 
-
 @OptIn(ExperimentalCompilerApi::class)
 internal fun findGeneratedFiles(compilation: KotlinCompilation): List<File> {
     return compilation.kspSourcesDir
