@@ -46,6 +46,7 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
                                 try {
                                     processNode(node, processor)
                                 } catch (e: Throwable) {
+                                    ensureActive()
                                     onError(node, e)?.let {
                                         failedNodes.add(it)
                                     }

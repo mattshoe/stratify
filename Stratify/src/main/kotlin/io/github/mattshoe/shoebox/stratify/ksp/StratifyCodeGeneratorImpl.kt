@@ -16,17 +16,17 @@ internal class StratifyCodeGeneratorImpl(
 
     override val generatedFile: Collection<File>
         get() = run {
-            ensureOnMainThread()
+            ensureMain()
             codeGenerator.generatedFile
         }
 
     override fun associate(sources: List<KSFile>, packageName: String, fileName: String, extensionName: String) {
-        ensureOnMainThread()
+        ensureMain()
         codeGenerator.associate(sources, packageName, fileName, extensionName)
     }
 
     override fun associateByPath(sources: List<KSFile>, path: String, extensionName: String) {
-        ensureOnMainThread()
+        ensureMain()
         codeGenerator.associateByPath(sources, path, extensionName)
     }
 
@@ -36,7 +36,7 @@ internal class StratifyCodeGeneratorImpl(
         fileName: String,
         extensionName: String
     ) {
-        ensureOnMainThread()
+        ensureMain()
         codeGenerator.associateWithClasses(
             classes,
             packageName,
@@ -51,7 +51,7 @@ internal class StratifyCodeGeneratorImpl(
         fileName: String,
         extensionName: String
     ): OutputStream {
-        ensureOnMainThread()
+        ensureMain()
         return codeGenerator.createNewFile(
             dependencies,
             packageName,
@@ -61,8 +61,12 @@ internal class StratifyCodeGeneratorImpl(
     }
 
     override fun createNewFileByPath(dependencies: Dependencies, path: String, extensionName: String): OutputStream {
-        ensureOnMainThread()
+        ensureMain()
         return codeGenerator.createNewFileByPath(dependencies, path, extensionName)
+    }
+    
+    private fun ensureMain() {
+        ensureOnMainThread(CodeGenerator::class.simpleName.toString())
     }
 
 }

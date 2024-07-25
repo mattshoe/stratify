@@ -11,40 +11,40 @@ internal class StratifyResolverImpl(
 ): Resolver {
     override val builtIns: KSBuiltIns
         get() = run {
-            ensureOnMainThread()
+            ensureMain()
             resolver.builtIns
         }
 
     override fun createKSTypeReferenceFromKSType(type: KSType): KSTypeReference {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.createKSTypeReferenceFromKSType(type)
     }
 
     @KspExperimental
     override fun effectiveJavaModifiers(declaration: KSDeclaration): Set<Modifier> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.effectiveJavaModifiers(declaration)
     }
 
     override fun getAllFiles(): Sequence<KSFile> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getAllFiles()
     }
 
     override fun getClassDeclarationByName(name: KSName): KSClassDeclaration? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getClassDeclarationByName(name)
     }
 
     @KspExperimental
     override fun getDeclarationsFromPackage(packageName: String): Sequence<KSDeclaration> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getDeclarationsFromPackage(packageName)
     }
 
     @KspExperimental
     override fun getDeclarationsInSourceOrder(container: KSDeclarationContainer): Sequence<KSDeclaration> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getDeclarationsInSourceOrder(container)
     }
 
@@ -52,121 +52,121 @@ internal class StratifyResolverImpl(
         name: KSName,
         includeTopLevel: Boolean
     ): Sequence<KSFunctionDeclaration> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getFunctionDeclarationsByName(name, includeTopLevel)
     }
 
     @KspExperimental
     override fun getJavaWildcard(reference: KSTypeReference): KSTypeReference {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getJavaWildcard(reference)
     }
 
     @KspExperimental
     override fun getJvmCheckedException(function: KSFunctionDeclaration): Sequence<KSType> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getJvmCheckedException(function)
     }
 
     @KspExperimental
     override fun getJvmCheckedException(accessor: KSPropertyAccessor): Sequence<KSType> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getJvmCheckedException(accessor)
     }
 
     @KspExperimental
     override fun getJvmName(declaration: KSFunctionDeclaration): String? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getJvmName(declaration)
     }
 
     @KspExperimental
     override fun getJvmName(accessor: KSPropertyAccessor): String? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getJvmName(accessor)
     }
 
     override fun getKSNameFromString(name: String): KSName {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getKSNameFromString(name)
     }
 
     @KspExperimental
     override fun getModuleName(): KSName {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getModuleName()
     }
 
     override fun getNewFiles(): Sequence<KSFile> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getNewFiles()
     }
 
     @KspExperimental
     override fun getOwnerJvmClassName(declaration: KSFunctionDeclaration): String? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getOwnerJvmClassName(declaration)
     }
 
     @KspExperimental
     override fun getOwnerJvmClassName(declaration: KSPropertyDeclaration): String? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getOwnerJvmClassName(declaration)
     }
 
     @KspExperimental
     override fun getPackageAnnotations(packageName: String): Sequence<KSAnnotation> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getPackageAnnotations(packageName)
     }
 
     @KspExperimental
     override fun getPackagesWithAnnotation(annotationName: String): Sequence<String> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getPackagesWithAnnotation(annotationName)
     }
 
     override fun getPropertyDeclarationByName(name: KSName, includeTopLevel: Boolean): KSPropertyDeclaration? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getPropertyDeclarationByName(name, includeTopLevel)
     }
 
     override fun getSymbolsWithAnnotation(annotationName: String, inDepth: Boolean): Sequence<KSAnnotated> {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getSymbolsWithAnnotation(annotationName, inDepth)
     }
 
     override fun getTypeArgument(typeRef: KSTypeReference, variance: Variance): KSTypeArgument {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.getTypeArgument(typeRef, variance)
     }
 
     @KspExperimental
     override fun isJavaRawType(type: KSType): Boolean {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.isJavaRawType(type)
     }
 
     @KspExperimental
     override fun mapJavaNameToKotlin(javaName: KSName): KSName? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.mapJavaNameToKotlin(javaName)
     }
 
     @KspExperimental
     override fun mapKotlinNameToJava(kotlinName: KSName): KSName? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.mapKotlinNameToJava(kotlinName)
     }
 
     @KspExperimental
     override fun mapToJvmSignature(declaration: KSDeclaration): String? {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.mapToJvmSignature(declaration)
     }
 
     override fun overrides(overrider: KSDeclaration, overridee: KSDeclaration): Boolean {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.overrides(overrider, overridee)
     }
 
@@ -175,8 +175,12 @@ internal class StratifyResolverImpl(
         overridee: KSDeclaration,
         containingClass: KSClassDeclaration
     ): Boolean {
-        ensureOnMainThread()
+        ensureMain()
         return resolver.overrides(overrider, overridee, containingClass)
+    }
+    
+    private fun ensureMain() {
+        ensureOnMainThread(Resolver::class.simpleName.toString())
     }
 
 }
