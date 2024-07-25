@@ -1,4 +1,4 @@
-package io.github.mattshoe.shoebox.stratify.kspwrappers
+package io.github.mattshoe.shoebox.stratify.ksp
 
 import com.google.devtools.ksp.processing.Resolver
 import io.github.mattshoe.shoebox.stratify.dispatchers.StratifyDispatcher

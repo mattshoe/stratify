@@ -4,9 +4,10 @@ import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import io.github.mattshoe.shoebox.stratify.dispatchers.StratifyDispatcher
-import io.github.mattshoe.shoebox.stratify.kspwrappers.DeprecatedCodeGenerator
-import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyCodeGenerator
-import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyResolver
+import io.github.mattshoe.shoebox.stratify.ksp.StratifyCodeGeneratorImpl
+import io.github.mattshoe.shoebox.stratify.ksp.StratifyCodeGenerator
+import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
+import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolverImpl
 import io.github.mattshoe.shoebox.stratify.logger.StratifyLogger
 import io.github.mattshoe.shoebox.stratify.model.GeneratedFile
 import io.github.mattshoe.shoebox.stratify.processor.Processor
@@ -17,20 +18,22 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
     protected val environment = SymbolProcessorEnvironment(
         stratifySymbolProcessorEnvironment.kspEnvironment.options,
         stratifySymbolProcessorEnvironment.kspEnvironment.kotlinVersion,
-        DeprecatedCodeGenerator(),
+        StratifyCodeGeneratorImpl(stratifySymbolProcessorEnvironment.kspEnvironment.codeGenerator),
         StratifyLogger(stratifySymbolProcessorEnvironment.kspEnvironment.logger),
         stratifySymbolProcessorEnvironment.kspEnvironment.apiVersion,
         stratifySymbolProcessorEnvironment.kspEnvironment.compilerVersion,
         stratifySymbolProcessorEnvironment.kspEnvironment.platforms,
         stratifySymbolProcessorEnvironment.kspEnvironment.kspVersion,
     )
-    protected val codeGenerator: StratifyCodeGenerator = StratifyCodeGenerator(stratifySymbolProcessorEnvironment.kspEnvironment.codeGenerator)
+    protected val codeGenerator: StratifyCodeGenerator = StratifyCodeGenerator(environment.codeGenerator)
     protected val logger: KSPLogger = environment.logger
 
     protected abstract suspend fun buildStrategies(resolver: StratifyResolver): List<Strategy<KSNode, out KSNode>>
 
     final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking(SupervisorJob() + StratifyDispatcher.Main) {
-        val stratifyResolver = StratifyResolver(resolver)
+        val stratifyResolver = StratifyResolver(
+            StratifyResolverImpl(resolver)
+        )
         val failedNodes = mutableListOf<KSAnnotated>()
 
         buildStrategies(stratifyResolver).forEach { strategy ->

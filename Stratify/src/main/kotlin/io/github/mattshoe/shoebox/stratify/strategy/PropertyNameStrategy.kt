@@ -2,7 +2,7 @@ package io.github.mattshoe.shoebox.stratify.strategy
 
 import com.google.devtools.ksp.symbol.KSNode
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
-import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyResolver
+import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.processor.Processor
 
 /**

@@ -1,6 +1,6 @@
 package test.stratify
 
-import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyResolver
+import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.strategy.AnnotationStrategy
 import io.github.mattshoe.shoebox.stratify.StratifySymbolProcessor
 import test.stratify.annotation.DocReader
