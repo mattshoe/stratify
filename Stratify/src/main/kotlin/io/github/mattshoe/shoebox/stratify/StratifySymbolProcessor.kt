@@ -41,11 +41,9 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
                         .forEach { node ->
                             launch(Dispatchers.Default) {
                                 try {
-                                    logger.warn("processing node: $node")
                                     processNode(node, processor)
                                 } catch (e: Throwable) {
                                     onError(node, e)?.let {
-                                        logger.warn("Adding '$node' to failed nodes")
                                         failedNodes.add(it)
                                     }
                                 }
