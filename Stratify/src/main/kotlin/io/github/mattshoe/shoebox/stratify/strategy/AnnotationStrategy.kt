@@ -1,8 +1,8 @@
 package io.github.mattshoe.shoebox.stratify.strategy
 
-import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSNode
+import io.github.mattshoe.shoebox.stratify.kspwrappers.StratifyResolver
 import io.github.mattshoe.shoebox.stratify.processor.Processor
 import kotlin.reflect.KClass
 
@@ -16,16 +16,9 @@ data class AnnotationStrategy(
 ): Strategy<KSAnnotated, KSAnnotated> {
     constructor(annotation: KClass<out Annotation>, vararg processors: Processor<KSAnnotated>): this(annotation, processors.toList())
 
-    fun foo(resolver: Resolver, processor: Processor<KSAnnotated>): List<KSAnnotated> {
-        return resolver
-            .getSymbolsWithAnnotation(annotation.qualifiedName!!)
-            .filterIsInstance(processor.targetClass.java)
-            .toList()
-    }
-
-    override fun resolveNodes(resolver: Resolver, processor: Processor<KSNode>): List<KSAnnotated> {
-        return resolver
-            .getSymbolsWithAnnotation(annotation.qualifiedName!!)
-            .toList()
+    override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSAnnotated> {
+        return resolver.use {
+            getSymbolsWithAnnotation(annotation.qualifiedName!!)
+        }.toList()
     }
 }

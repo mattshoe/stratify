@@ -5,6 +5,8 @@ projects=(
   "Stratify"
 )
 
+set -e
+
 OUTPUT_DIR="./build/distributions/"
 echo "$PWD"
 
