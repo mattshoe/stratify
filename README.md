@@ -89,8 +89,8 @@ com.foo.bar.MyProcessorProvider
 
 ### 7. Implement a `Processor`
 
-Take the simple `Processor` below. This processor inspects the KDoc on any class declaration, then uses Kotlin Poet 
-to generate an extension function which returns the KDoc as a string:
+Take the simple `Processor` below. This processor inspects the KDoc on any class declaration, then uses
+[KotlinPoet](https://square.github.io/kotlinpoet/) to generate an extension function which returns the KDoc as a string:
 ```kotlin
 class DocReaderClassProcessor: Processor<KSClassDeclaration> { // Specify we're only interested in KSClassDeclaration
     override val targetClass = KSClassDeclaration::class // The class of your generic type 
@@ -185,7 +185,7 @@ any `GeneratedFile` from your processor.
 ### Case Study
 Consider the simple `Processor` below. 
 This processor inspects the KDoc on a class declaration, then generates an extension function which returns the KDoc 
-as a string, using KotlinPoet to generate the code.
+as a string, using [KotlinPoet](https://square.github.io/kotlinpoet/) to generate the code.
 
 Note that, by design, a `Processor` implementation is not tied to any particular annotation or other filtering logic. It simply 
 runs against all the `KSNode` resolved by your `Strategy`. This allows your `Processor` implementations to remain highly reusable
