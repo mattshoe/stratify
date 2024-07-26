@@ -36,7 +36,7 @@ jobs:
         id: tag_check
         run: |
           TAG=$(git tag -l "v${VERSION}")
-          echo "Captured Tag: `$TAG`"
+          echo "Captured Tag: __$TAG__"
           if [ -n "$TAG" ]; then
             echo "Tag v${{ env.VERSION }} already exists. Failing the build."
             exit 1
