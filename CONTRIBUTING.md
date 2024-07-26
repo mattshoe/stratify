@@ -43,7 +43,7 @@ Please follow these steps to have your contribution considered by the maintainer
 3. **If you've changed APIs**, update the documentation.
    - This includes README, KDocs, and any other associated documentation.
 4. **Ensure the test suite passes**.
-6. **Submit a pull request**.
+5. **Submit a pull request**.
 
 ## Style Guide
 
