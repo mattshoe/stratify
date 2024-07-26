@@ -6,7 +6,11 @@ on:
       - main
 
 jobs:
-  build:
+  release:
+    permissions:
+      contents: write
+      actions: write
+
     runs-on: ubuntu-latest
 
     steps:
