@@ -35,11 +35,11 @@ jobs:
       - name: Check if tag exists
         id: tag_check
         run: |
-          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-          echo "Tag v${{ env.VERSION }} already exists. Failing the build."
-          exit 1
+          if [ $(git tag -l "v${{ env.VERSION }}") ]; then
+            echo "Tag v${{ env.VERSION }} already exists. Failing the build."
+            exit 1
           else
-          echo "Tag v${{ env.VERSION }} does not exist. Continuing."
+            echo "Tag v${{ env.VERSION }} does not exist. Continuing."
           fi
 
       - name: Generate Artifacts
