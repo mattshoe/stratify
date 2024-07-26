@@ -3,6 +3,7 @@
 # Define the array of project names
 projects=(
   "Stratify"
+  "Stratify.Test"
 )
 
 set -e

@@ -42,6 +42,8 @@ Add the following to your `build.gradle.kts`
 dependencies {
     // Note that this will also provide the KSP libraries you need!
     implementation("io.github.mattshoe.shoebox:Stratify:1.1.0-beta6")  
+    // Provides a simple DSL to write compilation tests
+    testImplementation("io.github.mattshoe.shoebox:Stratify.Test:1.1.0-beta6")
 }
 ```
 
@@ -306,6 +308,54 @@ NewFilesStrategy(
     DocReaderClassProcessor()
 )
 ```
+
+# Testing
+Stratify provides you with a simplified testing DSL that will allow you to compile your KSP processor in your unit test
+and do integration testing on its functionality as a whole. This is very valuable to building a true testing suite for your
+processor.
+
+Below you can see a sample test that uses the compilation DSL. This is a snapshot of a real unit test built for 
+[Step 8](#8-choose-a-strategy-and-plug-in-your-processor) of the [Quick Start](#quick-start) section:
+```kotlin
+    @Test
+    fun `test annotation processor generates expected files`() = buildCompilation {
+        processors(AnnotationProcessorProvider())
+        file("Test.kt") {
+            """
+                package io.github.mattshoe.test
+
+                import test.stratify.annotation.DocReader
+
+                /**
+                 * This is SomeInterface that fetches some data.
+                 */
+                @DocReader
+                interface SomeInterface {
+
+                    /**
+                     * This is a function that fetches some data
+                     */
+                    @DocReader
+                    suspend fun fetchData(param: String): String
+                }
+            """.trimIndent()
+        }
+
+        options {
+            assertionsMode = "always-enable"
+            javacArguments = mutableListOf("-parameters")
+            // etc, etc...
+        }
+
+        compile { compilation ->
+            val generatedClassDoc = compilation.generatedFiles.firstOrNull { it.name == "SomeInterface_DocReader.kt" }
+            Truth.assertThat(compilation.generatedFiles).hasSize(1)
+            Truth.assertThat(generatedClassDoc).isNotNull()
+        }
+    }
+```
+
+
 
 <br>
 <br>

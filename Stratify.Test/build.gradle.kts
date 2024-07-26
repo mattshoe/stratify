@@ -1,9 +1,13 @@
 plugins {
     kotlin("jvm")
+    id("maven-publish")
+    signing
 }
 
-val ARTIFACT_ID = "Stratify.Test"
-val publicationName = "stratifyTest"
+ext {
+    set("ARTIFACT_ID", "Stratify.Test")
+    set("PUBLICATION_NAME", "stratifyTest")
+}
 
 dependencies {
     api(libs.compile.testing.ksp)
@@ -11,8 +15,4 @@ dependencies {
     implementation(libs.truth)
 
     testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnit()
 }
