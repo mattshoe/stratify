@@ -35,7 +35,7 @@ jobs:
       - name: Check if tag exists
         id: tag_check
         run: |
-          if [ $(git tag -l "v${{ env.VERSION }}") ]; then
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
             echo "Tag v${{ env.VERSION }} already exists. Failing the build."
             exit 1
           else
