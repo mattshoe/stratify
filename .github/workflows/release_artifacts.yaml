@@ -35,6 +35,9 @@ jobs:
       - name: Check if tag exists
         id: tag_check
         run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
           TAG_VERSION="v${{ env.VERSION }}"
           TAG=$(git tag -l "$TAG_VERSION")
           echo "Captured Tag: $TAG"
