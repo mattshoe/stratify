@@ -19,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup JDK Develop
+      - name: Setup JDK Main
         uses: actions/setup-java@v4
         with:
           java-version: '11'
