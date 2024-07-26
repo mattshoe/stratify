@@ -42,9 +42,8 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
                     strategy.resolveNodes(stratifyResolver, processor)
                         .filterIsInstance(processor.targetClass.java)
                         .forEach { node ->
-                            launch(Dispatchers.Default) {
+                            launch {
                                 try {
-                                    logger.warn("processing $node")
                                     processNode(node, processor)
                                 } catch (e: Throwable) {
                                     ensureActive()
