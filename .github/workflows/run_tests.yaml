@@ -22,8 +22,8 @@ jobs:
       - name: Setup JDK Develop
         uses: actions/setup-java@v4
         with:
-          distribution: 'oracle' # See 'Supported distributions' for available options
-          java-version: '21'
+          java-version: '11'
+          distribution: 'oracle'
 
       - name: Run tests
         run: ./gradlew clean test
