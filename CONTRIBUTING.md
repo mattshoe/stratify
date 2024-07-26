@@ -61,8 +61,24 @@ Please follow these steps to have your contribution considered by the maintainer
 - **Reference issues and pull requests liberally** after the first line.
 
 # Release Distribution
-TBD - setting up github actions for generating zips for Maven Central manual upload
-Will it work? Maybe...
+Releases are (mostly) automated with [GitHub Actions](https://github.com/mattshoe/stratify/actions).<br>
+See [release_artifacts.yaml](.github/workflows/release_artifacts.yaml) <br>
+See [Release Artifacts Action](https://github.com/mattshoe/stratify/actions/workflows/release_artifacts.yaml)
+
+### Summary
+Every time the `version` property in `gradle.properties` is changed and pushed to `main`, that commit will be tagged with
+the new version, and a new [GitHub Release](https://github.com/mattshoe/stratify/releases) will be generated with all 
+relevant artifacts attached as assets to the [GitHub Release](https://github.com/mattshoe/stratify/releases).
+
+Each Release will contain a zip file which contains the following:
+1. The zipped artifacts for the `Stratify` module
+2. The zipped artifacts for the `Stratify.Test` module
+
+Once the release artifacts are generated, the individual zip files must be manually uploaded to 
+[Maven Central](https://central.sonatype.com/artifact/io.github.mattshoe.shoebox/Stratify/overview) for both `Stratify` 
+and `Stratify.Test`.
+
+_**The [GitHub Actions](https://github.com/mattshoe/stratify/actions) are not configured to upload artifacts to Maven Central, the zips must be uploaded manually by a maintainer.**_
 
 ## Additional Notes
 
