@@ -51,9 +51,20 @@ jobs:
             echo "Tag v${{ env.VERSION }} does not exist. Continuing."
           fi
 
+#      - name: Set up GPG
+#        run: |
+#          echo "${{ secrets.GPG_SIGNING_KEY }}" | gpg --import
+#          echo "${{ secrets.GPG_SIGNING_PASSPHRASE }}" > gpg-passphrase.txt
+#        env:
+#          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+#          GPG_SIGNING_PASSPHRASE: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
+
       - name: Generate Artifacts
         id: generate_artifacts
         run: ./ci/zip.sh
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+          GPG_SIGNING_PASSPHRASE: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
 
       - name: Tag the Commit
         run: |
