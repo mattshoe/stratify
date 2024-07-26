@@ -62,7 +62,7 @@ Please follow these steps to have your contribution considered by the maintainer
 
 # Release Distribution
 TBD - setting up github actions for generating zips for Maven Central manual upload
-Will it work?
+Will it work? Maybe...
 
 ## Additional Notes
 
