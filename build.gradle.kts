@@ -120,7 +120,7 @@ subprojects {
                     PublishToMavenRepository::class.java
                 )
                 from(publishTask.map { it.repository.url })
-                archiveFileName.set("${subArtifactId}_${VERSION}.zip")
+                archiveFileName.set("${publicationName}_${VERSION}.zip")
             }
         }
     }
