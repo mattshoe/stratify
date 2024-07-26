@@ -37,7 +37,7 @@ jobs:
         run: |
           TAG=$(git tag -l "v${VERSION}")
           echo "Captured Tag: `$TAG`"
-          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+          if [ -n "$TAG" ]; then
             echo "Tag v${{ env.VERSION }} already exists. Failing the build."
             exit 1
           else
