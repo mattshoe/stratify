@@ -1,0 +1,49 @@
+name: Run All Tests
+run-name: Test Suite for $${{ github.event.pull_request.number }} by ${{ github.actor }}
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - "feature/*"
+      - "release/*"
+      - "hotfix/*"
+      - "bugfix/*"
+
+jobs:
+  run-all-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+
+      - name: Run tests
+        run: ./gradlew clean test
+
+      - name: Test Results for Stratify.Consumer
+        if: always() # Ensure that this step runs even if the tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: Stratify.Consumer/build/reports/tests/test/**
+
+      - name: Test Results for Stratify.Test
+        if: always() # Ensure that this step runs even if the tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: Stratify.Test/build/reports/tests/test/**
+
+      - name: Test Results for Stratify
+        if: always() # Ensure that this step runs even if the tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: Stratify/build/reports/tests/test/**

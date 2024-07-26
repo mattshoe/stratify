@@ -37,6 +37,10 @@ allprojects {
             showStandardStreams = true
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
+        reports {
+            html.required = true
+            junitXml.required = true
+        }
     }
 }
 
