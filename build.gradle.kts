@@ -55,6 +55,7 @@ subprojects {
     afterEvaluate {
         (findProperty("PUBLICATION_NAME") as? String)?.let { publicationName ->
             val subArtifactId = findProperty("ARTIFACT_ID") as String
+
             plugins.withId("maven-publish") {
                 publishing {
                     publications {
@@ -125,3 +126,7 @@ subprojects {
         }
     }
 }
+
+iCxq7ryV
+
+H/IuvHqb3FPfxHiDJWFlSQ2AVc1afBuu2OI91wCROC+l
