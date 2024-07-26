@@ -309,6 +309,9 @@ NewFilesStrategy(
 )
 ```
 
+<br>
+<br>
+
 # Testing
 Stratify provides you with a simplified testing DSL that will allow you to compile your KSP processor in your unit test
 and do integration testing on its functionality as a whole. This is very valuable to building a true testing suite for your
@@ -355,9 +358,6 @@ Below you can see a sample test that uses the compilation DSL. This is a snapsho
     }
 ```
 
-
-
-<br>
 <br>
 <br>
 
