@@ -60,6 +60,9 @@ Please follow these steps to have your contribution considered by the maintainer
 - **Limit the first line to 72 characters or less**.
 - **Reference issues and pull requests liberally** after the first line.
 
+# Release Distribution
+TBD - setting up github actions for generating zips for Maven Central manual upload
+
 ## Additional Notes
 
 ### Issue and Pull Request Labels
