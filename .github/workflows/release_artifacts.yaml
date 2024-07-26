@@ -18,6 +18,8 @@ jobs:
       - name: Checkout code
         id: checkout_code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup JDK
         id: setup_jdk
@@ -39,6 +41,7 @@ jobs:
           git config --global user.email "actions@github.com"
           
           TAG_VERSION="v${{ env.VERSION }}"
+          echo "Tag version: $TAG_VERSION"
           TAG=$(git tag -l "$TAG_VERSION")
           echo "Captured Tag: $TAG"
           if [ -n "$TAG" ]; then
