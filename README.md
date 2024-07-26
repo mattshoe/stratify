@@ -41,9 +41,9 @@ Add the following to your `build.gradle.kts`
 ```kotlin
 dependencies {
     // Note that this will also provide the KSP libraries you need!
-    implementation("io.github.mattshoe.shoebox:Stratify:1.1.0-beta11")  
+    implementation("io.github.mattshoe.shoebox:Stratify:1.1.0-beta12")  
     // Provides a simple DSL to write compilation tests
-    testImplementation("io.github.mattshoe.shoebox:Stratify.Test:1.1.0-beta11")
+    testImplementation("io.github.mattshoe.shoebox:Stratify.Test:1.1.0-beta12")
 }
 ```
 
