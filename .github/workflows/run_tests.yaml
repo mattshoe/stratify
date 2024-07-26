@@ -1,5 +1,5 @@
 name: Run All Tests
-run-name: Test Suite for PR$${{ github.event.pull_request.number }} by ${{ github.actor }}
+run-name: Test Suite for PR#${{ github.event.pull_request.number }} by ${{ github.actor }}
 
 on:
   pull_request:

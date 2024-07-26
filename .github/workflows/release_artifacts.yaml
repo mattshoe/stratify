@@ -1,4 +1,5 @@
 name: Release Artifacts
+run-name: Release Artifacts for commit '${{ github.sha }}' by ${{ github.actor }}
 
 on:
   push:
@@ -15,9 +16,11 @@ jobs:
 
     steps:
       - name: Checkout code
+        id: checkout_code
         uses: actions/checkout@v3
 
       - name: Setup JDK
+        id: setup_jdk
         uses: actions/setup-java@v4
         with:
           java-version: '21'
@@ -39,16 +42,11 @@ jobs:
           echo "Tag v${{ env.VERSION }} does not exist. Continuing."
           fi
 
-      - name: Run script to generate artifacts
+      - name: Generate Artifacts
+        id: generate_artifacts
         run: ./ci/zip.sh
 
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-artifacts
-          path: build/distributions/*.zip
-
-      - name: Tag the merge commit
+      - name: Tag the Commit
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
@@ -58,6 +56,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,6 +69,7 @@ jobs:
 
 
       - name: Upload Release Assets
+        id: upload_release_assets
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
