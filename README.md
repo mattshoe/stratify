@@ -322,7 +322,7 @@ Below you can see a sample test that uses the compilation DSL. This is a snapsho
 ```kotlin
     @Test
     fun `test annotation processor generates expected files`() = buildCompilation {
-        processors(AnnotationProcessorProvider())
+        processors(MyProcessorProvider())
         file("Test.kt") {
             """
                 package io.github.mattshoe.test
