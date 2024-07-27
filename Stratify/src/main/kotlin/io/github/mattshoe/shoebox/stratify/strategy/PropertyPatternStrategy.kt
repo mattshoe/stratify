@@ -21,10 +21,7 @@ data class PropertyPatternStrategy(
 
     private val regex = Regex(pattern)
 
-    override suspend fun resolveNodes(
-        resolver: StratifyResolver,
-        processor: Processor<KSNode>
-    ): List<KSPropertyDeclaration> {
+    override suspend fun resolveNodes(resolver: StratifyResolver): List<KSPropertyDeclaration> {
         return resolver.use {
             getSourceFiles()
         }.flatMap {

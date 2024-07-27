@@ -21,10 +21,7 @@ data class FunctionNameStrategy(
 ): Strategy<KSFunctionDeclaration, KSFunctionDeclaration> {
     constructor(name: String, vararg processors: Processor<KSFunctionDeclaration>): this(name, processors.toList())
 
-    override suspend fun resolveNodes(
-        resolver: StratifyResolver,
-        processor: Processor<KSNode>
-    ): List<KSFunctionDeclaration> {
+    override suspend fun resolveNodes(resolver: StratifyResolver): List<KSFunctionDeclaration> {
         return resolver.use {
             getFunctionDeclarationsByName(name)
         }.toList()

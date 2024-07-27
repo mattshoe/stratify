@@ -39,7 +39,7 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
         buildStrategies(stratifyResolver).forEach { strategy ->
             strategy.processors.forEach { processor ->
                 launch(StratifyDispatcher.Main) {
-                    strategy.resolveNodes(stratifyResolver, processor)
+                    strategy.resolveNodes(stratifyResolver)
                         .filterIsInstance(processor.targetClass.java)
                         .forEach { node ->
                             launch {

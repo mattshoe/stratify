@@ -16,7 +16,7 @@ data class FileNameStrategy(
 ): Strategy<KSFile, KSFile> {
     constructor(name: String, vararg processors: Processor<KSFile>): this(name, processors.toList())
 
-    override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSFile> {
+    override suspend fun resolveNodes(resolver: StratifyResolver): List<KSFile> {
         return resolver.use {
             getSourceFiles()
         }.filter {

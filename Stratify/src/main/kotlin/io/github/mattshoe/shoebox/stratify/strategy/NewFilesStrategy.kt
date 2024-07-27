@@ -18,7 +18,7 @@ data class NewFilesStrategy(
 ): Strategy<KSFile, KSFile> {
     constructor(vararg processors: Processor<KSFile>): this(processors.toList())
 
-    override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSFile> {
+    override suspend fun resolveNodes(resolver: StratifyResolver): List<KSFile> {
         return resolver.use {
             getNewFiles()
         }.toList()
