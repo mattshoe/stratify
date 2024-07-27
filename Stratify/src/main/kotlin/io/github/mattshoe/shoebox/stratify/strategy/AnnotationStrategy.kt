@@ -16,7 +16,7 @@ data class AnnotationStrategy(
 ): Strategy<KSAnnotated, KSAnnotated> {
     constructor(annotation: KClass<out Annotation>, vararg processors: Processor<KSAnnotated>): this(annotation, processors.toList())
 
-    override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSAnnotated> {
+    override suspend fun resolveNodes(resolver: StratifyResolver): List<KSAnnotated> {
         return resolver.use {
             getSymbolsWithAnnotation(annotation.qualifiedName ?: "")
         }.toList()

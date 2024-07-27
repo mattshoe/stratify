@@ -19,10 +19,7 @@ data class PropertyNameStrategy(
 ): Strategy<KSPropertyDeclaration, KSPropertyDeclaration> {
     constructor(name: String, vararg processors: Processor<KSPropertyDeclaration>): this(name, processors.toList())
 
-    override suspend fun resolveNodes(
-        resolver: StratifyResolver,
-        processor: Processor<KSNode>
-    ): List<KSPropertyDeclaration> {
+    override suspend fun resolveNodes(resolver: StratifyResolver): List<KSPropertyDeclaration> {
         return resolver.use {
             getSourceFiles()
         }.flatMap {

@@ -25,19 +25,18 @@ data class FilePatternStrategy(
 
     private val regex = Regex(pattern)
 
-    override suspend fun resolveNodes(resolver: StratifyResolver, processor: Processor<KSNode>): List<KSFile> {
+    override suspend fun resolveNodes(resolver: StratifyResolver): List<KSFile> {
         return resolver.use {
             getSourceFiles()
         }.filter { file ->
-            shouldProcess(file, processor.targetClass).also {
+            shouldProcess(file).also {
                 alreadyProcessed.add(file.filePath)
             }
         }.toList()
     }
 
-    private fun shouldProcess(file: KSFile, target: KClass<*>): Boolean {
+    private fun shouldProcess(file: KSFile): Boolean {
         return !alreadyProcessed.contains(file.filePath)
-                && target.java.isAssignableFrom(file::class.java)
                 && file.fileName.matches(regex)
     }
 
