@@ -32,8 +32,6 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
     protected abstract suspend fun buildStrategies(resolver: StratifyResolver): List<Strategy<KSNode, out KSNode>>
 
     final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking(SupervisorJob() + StratifyDispatcher.Main) {
-        StratifyMainHandler.mainThread = Thread.currentThread()
-
         val stratifyResolver = StratifyResolver(
             StratifyResolverImpl(resolver)
         )
