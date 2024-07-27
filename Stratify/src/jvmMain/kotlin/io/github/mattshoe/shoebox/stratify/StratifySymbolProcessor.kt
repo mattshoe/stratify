@@ -4,6 +4,7 @@ import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import io.github.mattshoe.shoebox.stratify.dispatchers.StratifyDispatcher
+import io.github.mattshoe.shoebox.stratify.dispatchers.StratifyMainHandler
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyCodeGeneratorImpl
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyCodeGenerator
 import io.github.mattshoe.shoebox.stratify.ksp.StratifyResolver
@@ -31,6 +32,8 @@ abstract class StratifySymbolProcessor: SymbolProcessor {
     protected abstract suspend fun buildStrategies(resolver: StratifyResolver): List<Strategy<KSNode, out KSNode>>
 
     final override fun process(resolver: Resolver): List<KSAnnotated> = runBlocking(SupervisorJob() + StratifyDispatcher.Main) {
+        StratifyMainHandler.mainThread = Thread.currentThread()
+
         val stratifyResolver = StratifyResolver(
             StratifyResolverImpl(resolver)
         )

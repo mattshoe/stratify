@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
     id("maven-publish")
     signing
 }
@@ -9,12 +9,33 @@ ext {
     set("PUBLICATION_NAME", "stratify")
 }
 
-dependencies {
-    api(libs.ksp.symbol.processing.api)
-    implementation(libs.kotlinx.coroutines)
+kotlin {
+    jvm()
+    iosX64()
+    iosArm64()
+    js {
+        browser()
+        nodejs()
+    }
+    applyDefaultHierarchyTemplate()
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines)
+            implementation(kotlin("reflect"))
+        }
+        iosMain {
+            dependsOn(commonMain.get())
+        }
+        jsMain {
+            dependsOn(commonMain.get())
+        }
+        jvmMain {
+            dependsOn(commonMain.get())
+            dependencies {
+                api(libs.ksp.symbol.processing.api)
 
-    testImplementation(kotlin("test"))
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit)
+            }
+        }
+    }
 }
 
