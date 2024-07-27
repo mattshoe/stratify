@@ -89,12 +89,3 @@ jobs:
           asset_path: build/distributions/stratify_artifacts_${{ env.VERSION }}.zip
           asset_name: stratify_artifacts_${{ env.VERSION }}.zip
           asset_content_type: application/zip
-
-      - name: Publish to Maven Central
-        run: ./gradlew publish
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SIGNING_KEY }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_SIGNING_PASSPHRASE }}
